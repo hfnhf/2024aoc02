@@ -48,18 +48,13 @@ class ReportAnalyzer
   def display_results
     puts "\nAnalysis Results:"
     puts "-----------------"
-    safe_count = 0
-    total_count = 0
-    
     @db.execute("SELECT levels, is_safe FROM reports") do |report|
-      total_count += 1
-      safe_count += 1 if report[1] == 1
+      levels = report[0]
+      is_safe = report[1] == 1
+      status = is_safe ? "SAFE" : "UNSAFE"
+      puts "#{levels}: #{status}"
     end
-    
-    puts "\nSummary:"
-    puts "Total reports: #{total_count}"
-    puts "Safe reports: #{safe_count}"
-    puts "Unsafe reports: #{total_count - safe_count}"
+    puts "\nTotal safe reports: #{count_safe_reports}"
   end
 end
 

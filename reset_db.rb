@@ -1,11 +1,11 @@
 require 'sqlite3'
 
 def reset_database
-  # Remove existing database file if it exists
-  File.delete('reports.db') if File.exist?('reports.db')
-  
-  # Create a new database
+  # Connect to the existing database or create a new one if it doesn't exist
   db = SQLite3::Database.new('reports.db')
+
+  # Drop the existing reports table if it exists
+  db.execute("DROP TABLE IF EXISTS reports")
   
   # Create the reports table
   db.execute <<-SQL
